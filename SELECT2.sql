@@ -22,7 +22,10 @@ where singer_name not like '%% %%'
 --Название треков, которые содержат слово «мой» или «my».
 select track_name 
 from music_track 
-WHERE CONCAT(' ', LOWER(track_name), ' ') LIKE '% мой %' OR CONCAT(' ', LOWER(track_name), ' ') LIKE '% my %';
+WHERE 
+'my' = ANY(string_to_array(regexp_replace(lower(track_name), '\W+', ' ', 'g'),' '))
+OR 
+'мой' = ANY(string_to_array(regexp_replace(lower(track_name), '\W+', ' ', 'g'),' '));
 
 --Количество исполнителей в каждом жанре.
 select ms.style_name, count(ss.id_singer)  
